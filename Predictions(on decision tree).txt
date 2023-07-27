@@ -1,0 +1,14 @@
+from sklearn.tree import DecisionTreeClassifier
+import joblib
+
+# Load the trained decision tree model from a saved file
+model = joblib.load('trained_model.pkl')
+
+# Prepare the new data (example: single data point with three features)
+new_data = [['3',' 5.69742', '0', '0', '2.059342', '0', '3.141359'],['3','5.25638','0','0','2.7824','1','5.83467']]
+
+# Use the model for predictions
+predictions = model.predict(new_data)
+
+# Print the predictions
+print("Predictions:", predictions)

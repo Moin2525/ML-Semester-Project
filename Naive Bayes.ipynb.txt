@@ -1,0 +1,44 @@
+# Naive Bayes Classifier
+
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn import metrics
+
+
+path = '/content/drive/MyDrive/PNDB.csv'
+df = pd.read_csv(path)
+
+# Convert categorical variables to numeric using LabelEncoder
+from sklearn.preprocessing import LabelEncoder
+
+def Encoder(df):
+    columnsToEncode = list(df.select_dtypes(include=['category', 'object']))
+    le = LabelEncoder()
+    for feature in columnsToEncode:
+        try:
+            df[feature] = le.fit_transform(df[feature])
+        except:
+            print('Error encoding ' + feature)
+    return df
+
+df = Encoder(df)
+
+
+# Split the dataset into features (X) and target variable (y)
+X = df.drop('PNDM', axis=1)
+y = df['PNDM']
+
+# Split the dataset into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train the Naive Bayes classifier
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(X_test)
+
+# Calculate the accuracy of the model
+accuracy = metrics.accuracy_score(y_test, y_pred)
+print("Accuracy:",100* accuracy, "%")
